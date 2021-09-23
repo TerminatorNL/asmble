@@ -58,7 +58,7 @@ open class Translate : Command<Translate.Args>() {
     fun inToAst(inFile: String, inFormat: String): Script {
         val inBytes =
             if (inFile == "--") System.`in`.use { it.readBytes() }
-            else File(inFile).let { f -> FileInputStream(f).use { it.readBytes(f.length().toIntExact()) } }
+            else File(inFile).let { f -> FileInputStream(f).use { it.readNBytes(f.length().toIntExact()) } }
         return when (inFormat) {
             "wast" -> StrToSExpr.parse(inBytes.toString(Charsets.UTF_8)).let { res ->
                 when (res) {
