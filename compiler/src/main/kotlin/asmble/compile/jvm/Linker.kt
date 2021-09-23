@@ -20,7 +20,7 @@ open class Linker {
 
         // Common items
         ctx.cls.superName = Object::class.ref.asmName
-        ctx.cls.version = Opcodes.V1_8
+        ctx.cls.version = Opcodes.V16
         ctx.cls.access += Opcodes.ACC_PUBLIC
         addConstructor(ctx)
         addDefaultMaxMemField(ctx)

@@ -20,7 +20,7 @@ open class AstToAsm {
     fun fromModule(ctx: ClsContext) {
         // Invoke dynamic among other things
         ctx.cls.superName = Object::class.ref.asmName
-        ctx.cls.version = Opcodes.V1_8
+        ctx.cls.version = Opcodes.V16
         ctx.cls.access += Opcodes.ACC_PUBLIC
         addFields(ctx)
         addConstructors(ctx)
