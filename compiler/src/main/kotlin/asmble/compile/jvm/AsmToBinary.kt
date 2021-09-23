@@ -6,6 +6,7 @@ import org.objectweb.asm.ClassWriter
 import org.objectweb.asm.MethodTooLargeException
 import org.objectweb.asm.Opcodes
 import org.objectweb.asm.tree.ClassNode
+import org.objectweb.asm.tree.FieldInsnNode
 import org.objectweb.asm.tree.MethodNode
 
 /**
@@ -59,6 +60,21 @@ open class AsmToBinary(
                 cn.methods.removeAt(tooLargeIndex)
                 cn.methods.add(tooLargeIndex, split.splitOffMethod)
                 cn.methods.add(tooLargeIndex, split.trimmedMethod)
+
+                val list = hashSetOf<Pair<String, String>>()
+                for (instruction in split.splitOffMethod.instructions) {
+                    if (instruction.opcode == Opcodes.PUTFIELD && instruction is FieldInsnNode && instruction.owner == cn.name){
+                        if(list.add(Pair(instruction.name,instruction.desc))){
+                            for (field in cn.fields) {
+                                if (field.access and Opcodes.ACC_FINAL != 0 && field.name == instruction.name && field.desc == instruction.desc) {
+                                    logger.info {"Removed ACC_FINAL from ${cn.name} ${field.name} allow splitting of function ${cn.methods[tooLargeIndex].name}"}
+                                    field.access = field.access and Opcodes.ACC_FINAL.inv()
+                                    break
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
     }
