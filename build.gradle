@@ -9,7 +9,7 @@ group 'asmble'
 version '0.4.1'
 
 ext.kotlin_version = '1.5.31'
-ext.asm_version = '7.1'
+ext.asm_version = '9.2'
 
 allprojects {
     apply plugin: 'java'
