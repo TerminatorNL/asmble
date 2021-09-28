@@ -14,7 +14,10 @@ data class ClsContext(
     val packageName: String,
     val className: String,
     val mod: Node.Module,
-    val cls: ClassNode = ClassNode().also { it.name = (packageName.replace('.', '/') + "/$className").trimStart('/') },
+    val cls: ClassNode = ClassNode().also {
+        it.name = (packageName.replace('.', '/') + "/$className").trimStart('/')
+        it.visitSource("$className.class", null)
+      },
     val mem: Mem = ByteBufferMem,
     val modName: String? = null,
     val reworker: InsnReworker = InsnReworker,
